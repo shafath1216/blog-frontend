@@ -1,7 +1,3 @@
-import styles from "./WelcomeMessage.module.css";
-
-const WelcomeMessage = () => {
-  return <p className={styles.welcome}>Enjoy Your Day</p>;
-};
-
-export default WelcomeMessage;
+export default function WelcomeMessage() {
+  return <p className="text-gray-500 mt-4">No posts yet. Be the first to write!</p>;
+}
