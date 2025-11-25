@@ -70,6 +70,24 @@ function App() {
       //setPosts(loadedPosts);
     //});
   //}, []);
+   
+  const handleNewPost = async (title, username, story) => {
+    try {
+      // Send post to server
+      //const savedPost = await addPostToServer(title, username, story);
+      const savedPost = {
+        id: posts.length + 1,
+        title,
+        username,
+        story
+      };
+      // Update front-end state with server response
+      setPosts([...posts, savedPost]);
+    } catch (error) {
+      console.error("Error adding post:", error);
+      alert("Failed to add post. Try again.");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-900">
