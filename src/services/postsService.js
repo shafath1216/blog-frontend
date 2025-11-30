@@ -1,11 +1,11 @@
 // Add a new post
-export const addPostToServer = async (title, username, content) => {
+export const addPostToServer = async (title, username, story) => {
   const response = await fetch('http://localhost:3000/api/posts', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ title, username, content })
+    body: JSON.stringify({ title, username, story })
   });
   return await response.json();
 };
