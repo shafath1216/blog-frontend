@@ -1,6 +1,8 @@
+const API_BASE = 'http://192.168.0.140/api';
+
 // Add a new post
 export const addPostToServer = async (title, username, story) => {
-  const response = await fetch('http://localhost:3000/api/posts', {
+  const response = await fetch(`${API_BASE}/posts`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -12,13 +14,13 @@ export const addPostToServer = async (title, username, story) => {
 
 // Get all posts
 export const getPostsFromServer = async () => {
-  const response = await fetch('http://localhost:3000/api/posts');
+  const response = await fetch(`${API_BASE}/posts`);
   return await response.json();
 };
 
 // Delete a post
 export const deletePostFromServer = async (postId) => {
-  const response = await fetch(`http://localhost:3000/api/posts/${postId}`, {
+  const response = await fetch(`${API_BASE}/posts/${postId}`, {
     method: 'DELETE'
   });
   const data = await response.json();
@@ -26,12 +28,3 @@ export const deletePostFromServer = async (postId) => {
   return data.id;
 };
 
-// Optional: edit post
-export const editPostOnServer = async (postId, updatedPost) => {
-  const response = await fetch(`http://localhost:3000/api/posts/${postId}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(updatedPost)
-  });
-  return await response.json();
-};
