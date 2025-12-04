@@ -1,4 +1,4 @@
-const API_BASE = 'http://192.168.0.140/api';
+const API_BASE =  '/api';
 
 // Add a new post
 export const addPostToServer = async (title, username, story) => {
