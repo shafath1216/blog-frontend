@@ -38,7 +38,7 @@ export default function NavBar() {
   <a href="/add-post" style={{ textDecoration: "none", transition: "color 0.3s" }}
      onMouseOver={e => (e.currentTarget.style.color = "#ffffff")}
      onMouseOut={e => (e.currentTarget.style.color = "#d1d5db")}>
-    Add your own story
+    Add a story
   </a>
 </div>
 
