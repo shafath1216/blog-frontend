@@ -20,7 +20,7 @@ export default function NavBar() {
       
       <div className="h-4"></div>
 
-      {/* Links */}
+      
       <div
   style={{
     display: "flex",
