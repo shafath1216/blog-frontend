@@ -1,3 +1,5 @@
+
+
 export default function NavBar() {
   return (
     <nav className="bg-gray-900 shadow-lg p-6 flex flex-col items-center">
@@ -15,7 +17,7 @@ export default function NavBar() {
         Ghost Stories
       </div>
 
-      {/* Spacing */}
+      
       <div className="h-4"></div>
 
       {/* Links */}
