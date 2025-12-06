@@ -24,7 +24,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "
             cd ${{ secrets.VPS_PATH }}/blog-frontend &&
             git pull &&
-            docker compose -f ../docker-compose.yml build frontend &&
-            docker compose -f ../docker-compose.yml up -d --no-deps frontend
+            docker-compose -f ../docker-compose.yml build frontend &&
+            docker-compose -f ../docker-compose.yml up -d --no-deps frontend
           "
 
