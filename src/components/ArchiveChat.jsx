@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const WEBHOOK_URL = import.meta.env.VITE_N8N_WEBHOOK_URL?.trim() || "";
+const WEBHOOK_URL = "https://n8n.ghost-stories.org/webhook/agent";
 const STORAGE_KEY = "archiveChatState";
 
 export default function ArchiveChat() {
