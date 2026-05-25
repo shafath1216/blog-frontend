@@ -82,7 +82,8 @@ export default function ArchiveChat() {
         throw new Error(`Webhook responded ${response.status}`);
       }
 
-      const data = await response.json().catch(() => null);
+      const data = await response.json();
+      console.log("n8n response data:", JSON.stringify(data, null, 2));
       const parsedMessage = Array.isArray(data)
         ? data[0]?.message
         : data?.message;
