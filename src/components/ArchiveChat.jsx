@@ -55,11 +55,35 @@ export default function ArchiveChat() {
 
     const parseMaybeString = (value) => {
       if (typeof value !== "string") return value;
-      try {
-        return JSON.parse(value);
-      } catch {
-        return value;
+      const trimmed = value.trim();
+
+      const stripCodeFence = (text) => {
+        return text.replace(/^```json\s*([\s\S]*?)\s*```$/i, "$1").trim();
+      };
+
+      const tryParse = (text) => {
+        try {
+          return JSON.parse(text);
+        } catch {
+          return null;
+        }
+      };
+
+      const withoutFence = stripCodeFence(trimmed);
+      const asJson = tryParse(withoutFence);
+      if (asJson !== null) return asJson;
+
+      if (trimmed.includes("{") && trimmed.includes("}")) {
+        const firstBrace = trimmed.indexOf("{");
+        const lastBrace = trimmed.lastIndexOf("}");
+        if (firstBrace >= 0 && lastBrace > firstBrace) {
+          const jsonBlock = trimmed.slice(firstBrace, lastBrace + 1);
+          const parsedBlock = tryParse(jsonBlock);
+          if (parsedBlock !== null) return parsedBlock;
+        }
       }
+
+      return value;
     };
 
     const extractGhostText = (value) => {
