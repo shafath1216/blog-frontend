@@ -83,7 +83,10 @@ export default function ArchiveChat() {
       }
 
       const data = await response.json().catch(() => null);
-      const ghostText = data?.message || data?.text || data?.response || "The ghost heard you. The archive is listening.";
+      const parsedMessage = Array.isArray(data)
+        ? data[0]?.message
+        : data?.message;
+      const ghostText = parsedMessage || data?.text || data?.response || "The ghost heard you. The archive is listening.";
       const ghostMessage = {
         id: crypto.randomUUID(),
         role: "ghost",
