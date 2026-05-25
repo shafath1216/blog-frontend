@@ -40,100 +40,40 @@ export default function ArchiveChat() {
 
   const sendMessage = async (event) => {
     event.preventDefault();
-
     const trimmed = message.trim();
-    if (!trimmed) {
-      setStatus("Type a question for the ghost first.");
-      return;
-    }
+    if (!trimmed) return;
 
-    if (!WEBHOOK_URL) {
-      setStatus("Webhook not configured. Set VITE_N8N_WEBHOOK_URL in .env.");
-      return;
-    }
-
-    const userMessage = {
-      id: crypto.randomUUID(),
-      role: "user",
-      text: trimmed,
-      createdAt: new Date().toISOString(),
-    };
-
+    const userMessage = { id: crypto.randomUUID(), role: "user", text: trimmed, createdAt: new Date().toISOString() };
     const nextHistory = [...chatHistory, userMessage];
     saveMessage(nextHistory);
     setMessage("");
-    setStatus("Sending to the archive...");
     setLoading(true);
 
     try {
       const response = await fetch(WEBHOOK_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          sessionId,
-          message: trimmed,
-          chatHistory: nextHistory.map(({ role, text }) => ({ role, text })),
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId, message: trimmed, chatHistory: nextHistory.map(({ role, text }) => ({ role, text })) }),
       });
 
-      if (!response.ok) {
-        throw new Error(`Webhook responded ${response.status}`);
+      const data = await response.json();
+
+      // 1. Get the raw payload
+      let payload = Array.isArray(data) ? data[0] : data;
+
+      // 2. If it's a string, try to parse it once
+      if (typeof payload === "string") {
+        try {
+          payload = JSON.parse(payload);
+        } catch (e) {
+          // keep as string
+        }
       }
 
-      const data = await response.json();
-      console.log("n8n response data:", JSON.stringify(data, null, 2));
-
-      const safeParse = (value) => {
-        if (typeof value !== "string") return value;
-        try {
-          return JSON.parse(value);
-        } catch {
-          return value;
-        }
-      };
-
-      const extractText = (value) => {
-        const normalized = safeParse(value);
-
-        // If it's already a string, return it
-        if (typeof normalized === "string") return normalized.trim();
-
-        // If it's an array, dive into the first item
-        if (Array.isArray(normalized)) return extractText(normalized[0]);
-
-        // If it's an object, try to find the content
-        if (normalized && typeof normalized === "object") {
-          // Priority: message -> text -> response
-          const content = normalized.message ?? normalized.text ?? normalized.response;
-
-          // If we found content, recurse to handle potential double-stringification
-          if (content !== undefined) return extractText(content);
-        }
-
-        // Final fallback: turn whatever we have into a string
-        return String(normalized ?? "");
-      };
-
-      // Ensure ghostText is absolutely a flat string
-      const ghostText = extractText(data) || "The ghost heard you. The archive is listening.";
-      const ghostMessage = {
-        id: crypto.randomUUID(),
-        role: "ghost",
-        text: ghostText,
-        createdAt: new Date().toISOString(),
-      };
-
-      saveMessage([...nextHistory, ghostMessage]);
-      setStatus("The ghost remembered your message.");
-    } catch (error) {
-      setStatus(`Send failed: ${error.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+      // 3. Now we have an object. Extract the 'message' key if it exists
+      // If payload.message is itself an object (nested), turn it into a displayable string
+      const ghostText = payload?.message
+        ? (typeof payload.message === "object" ? JSON.stringify(payload.message).replace(/[\
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="mx-auto flex min-h-screen max-w-4xl flex-col justify-between p-4 sm:p-6">
