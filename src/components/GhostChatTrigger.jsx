@@ -8,13 +8,49 @@ export default function GhostChatTrigger() {
       type="button"
       onClick={() => navigate("/archive-chat")}
       aria-label="Chat with the ghost"
-      style={{ position: "fixed", top: "1rem", right: "1rem", zIndex: 9999 }}
-      className="inline-flex min-w-[6rem] flex-col items-center justify-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-3 text-white shadow-[0_20px_45px_rgba(0,0,0,0.35)] backdrop-blur-md transition duration-200 hover:-translate-y-1 hover:border-white/30 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-transparent"
+      style={{
+        position: "fixed",
+        top: "1rem",
+        right: "1rem",
+        zIndex: 9999,
+        display: "inline-flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "0.5rem",
+        minWidth: "6rem",
+        padding: "0.75rem 1rem",
+        borderRadius: "9999px",
+        border: "1px solid rgba(255,255,255,0.15)",
+        backgroundColor: "rgba(255,255,255,0.1)",
+        color: "#ffffff",
+        boxShadow: "0 20px 45px rgba(0,0,0,0.35)",
+        backdropFilter: "blur(10px)",
+        textAlign: "center",
+      }}
     >
-      <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-red-400/20 text-5xl text-red-300 shadow-[inset_0_0_0_1px_rgba(248,113,113,0.18)]">
+      <span style={{
+        height: "3.5rem",
+        width: "3.5rem",
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: "9999px",
+        backgroundColor: "rgba(248,113,113,0.2)",
+        color: "#fca5a5",
+        boxShadow: "inset 0 0 0 1px rgba(248,113,113,0.18)",
+        fontSize: "2rem",
+      }}>
         👻
       </span>
-      <span className="text-center text-xs font-semibold uppercase tracking-[0.18em] text-white/90">
+      <span style={{
+        textAlign: "center",
+        fontSize: "0.65rem",
+        fontWeight: 600,
+        letterSpacing: "0.18em",
+        textTransform: "uppercase",
+        color: "rgba(255,255,255,0.9)",
+      }}>
         chat with the ghost
       </span>
     </button>
