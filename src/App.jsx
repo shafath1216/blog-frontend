@@ -5,6 +5,8 @@ import { Routes, Route } from "react-router-dom";
 import PostDetail from "./components/PostDetail";
 import { getPostsFromServer,addPostToServer } from "./services/postsService";
 import AddPost from "./components/AddPost";
+import ArchiveChat from "./components/ArchiveChat";
+import GhostChatTrigger from "./components/GhostChatTrigger";
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -35,11 +37,13 @@ function App() {
       <NavBar />
 
       <Routes>
-  <Route path="/" element={<Home posts={posts} />} />
-  <Route path="/post/:id" element={<PostDetail posts={posts} />} />
-  <Route path="/add-post" element={<AddPost onNewPost={handleNewPost} />} />
-</Routes>
+        <Route path="/" element={<Home posts={posts} />} />
+        <Route path="/post/:id" element={<PostDetail posts={posts} />} />
+        <Route path="/add-post" element={<AddPost onNewPost={handleNewPost} />} />
+        <Route path="/archive-chat" element={<ArchiveChat />} />
+      </Routes>
 
+      <GhostChatTrigger />
     </div>
   );
 }
