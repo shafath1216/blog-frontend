@@ -84,10 +84,40 @@ export default function ArchiveChat() {
 
       const data = await response.json();
       console.log("n8n response data:", JSON.stringify(data, null, 2));
-      const parsedMessage = Array.isArray(data)
-        ? data[0]?.message
-        : data?.message;
-      const ghostText = parsedMessage || data?.text || data?.response || "The ghost heard you. The archive is listening.";
+
+      const safeParse = (value) => {
+        if (typeof value !== "string") return value;
+        try {
+          return JSON.parse(value);
+        } catch {
+          return value;
+        }
+      };
+
+      const extractText = (value) => {
+        const normalized = safeParse(value);
+
+        // If it's already a string, return it
+        if (typeof normalized === "string") return normalized.trim();
+
+        // If it's an array, dive into the first item
+        if (Array.isArray(normalized)) return extractText(normalized[0]);
+
+        // If it's an object, try to find the content
+        if (normalized && typeof normalized === "object") {
+          // Priority: message -> text -> response
+          const content = normalized.message ?? normalized.text ?? normalized.response;
+
+          // If we found content, recurse to handle potential double-stringification
+          if (content !== undefined) return extractText(content);
+        }
+
+        // Final fallback: turn whatever we have into a string
+        return String(normalized ?? "");
+      };
+
+      // Ensure ghostText is absolutely a flat string
+      const ghostText = extractText(data) || "The ghost heard you. The archive is listening.";
       const ghostMessage = {
         id: crypto.randomUUID(),
         role: "ghost",
